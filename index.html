@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Splitgate Hispano - Comunidad de Discord</title>
+  <meta name="description" content="Splitgate Hispano es la comunidad hispana de Splitgate 2. Únete a nuestro Discord para torneos, guías y diversión.">
+  <meta name="keywords" content="Splitgate Hispano, Splitgate 2, comunidad hispana, Discord, torneos, portales">
+  <meta property="og:title" content="Splitgate Hispano - Comunidad de Discord">
+  <meta property="og:description" content="¡Únete a Splitgate Hispano, la comunidad hispana de Splitgate 2! Torneos, guías y diversión en Discord.">
+  <meta property="og:image" content="https://i.imgur.com/abc123.png">
+  <meta property="og:url" content="https://splitgatehispano.com">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Splitgate Hispano">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Splitgate Hispano - Comunidad de Discord">
+  <meta name="twitter:description" content="¡Únete a Splitgate Hispano, la comunidad hispana de Splitgate 2! Torneos, guías y diversión en Discord.">
+  <meta name="twitter:image" content="https://i.imgur.com/abc123.png">
+  <link rel="icon" type="image/png" href="https://i.imgur.com/abc123.png">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 15px 20px;
+      box-shadow: 0 2px 5px rgba(0, 183, 255, 0.3);
+      z-index: 900;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .navbar a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #00b7ff;
+    }
+
+    .navbar a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #00b7ff;
+      transition: width 0.3s ease;
+    }
+
+    .navbar a:hover::after {
+      width: 100%;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    /* Intro Screen */
+    .intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeOut 1s ease-in-out 2.5s forwards;
+    }
+
+    .portal {
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(0, 183, 255, 0.3) 10%, transparent 70%);
+      border: 3px solid #00b7ff;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #00b7ff, 0 0 40px #ff6200;
+      animation: portalPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes portalPulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.5);
+        opacity: 0.7;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    /* Hide content during intro */
+    body:not(.loaded) > *:not(.intro) {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    body.loaded > *:not(.intro) {
+      opacity: 1;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
+      overflow: hidden;
+    }
+
+    .hero video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: -1;
+    }
+
+    .text-container {
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #00b7ff;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 700px;
+      box-shadow: 0 0 20px rgba(0, 183, 255, 0.5);
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      color: #00b7ff;
+      text-shadow: 0 0 10px #00b7ff;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      max-width: 600px;
+      margin-bottom: 30px;
+      text-shadow: 0 0 5px rgba(0, 183, 255, 0.5);
+    }
+
+    .cta-button {
+      padding: 15px 30px;
+      background-color: #5865F2;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #5865F2;
+    }
+
+    /* About Section */
+    .about {
+      padding: 50px 20px;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      background-image: url('https://images.igdb.com/igdb/image/upload/t_screenshot_big/ar3c8u.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      z-index: 1;
+    }
+
+    .about::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    .about h2 {
+      font-size: 2.5rem;
+      color: #00b7ff;
+      margin-bottom: 20px;
+    }
+
+    .about p {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* Community Section */
+    .community {
+      padding: 50px 20px;
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .community-banner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      max-width: 1000px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00b7ff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0, 183, 255, 0.5);
+      animation: slideInFromLeft 1s ease-out forwards;
+    }
+
+    @keyframes slideInFromLeft {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .character-image {
+      max-width: 300px;
+      height: auto;
+      border-radius: 5px;
+      border: 2px solid #00b7ff;
+      animation: slideImageFromLeft 0.8s ease-out 0.3s forwards, glowPulse 2s ease-in-out infinite;
+      opacity: 0;
+    }
+
+    @keyframes slideImageFromLeft {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 10px rgba(0, 183, 255, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(0, 183, 255, 0.8), 0 0 30px rgba(255, 98, 0, 0.5);
+      }
+      100% {
+        box-shadow: 0 0 10px rgba(0, 183, 255, 0.5);
+      }
+    }
+
+    .community-text {
+      max-width: 600px;
+    }
+
+    .community-text h2 {
+      font-size: 2rem;
+      color: #00b7ff;
+      margin-bottom: 15px;
+      text-shadow: 0 0 5px rgba(0, 183, 255, 0.5);
+    }
+
+    .community-text p {
+      font-size: 1rem;
+      line-height: 1.5;
+      text-shadow: 0 0 3px rgba(0, 183, 255, 0.3);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1a1a1a;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #5865F2;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar ul {
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        background: rgba(0, 0, 0, 0.95);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .navbar ul.active {
+        display: flex;
+      }
+
+      .hamburger {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+      }
+
+      .hero {
+        margin-top: 50px;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+      }
+
+      .text-container {
+        padding: 20px;
+        max-width: 90%;
+      }
+
+      .about {
+        padding: 30px 10px;
+        background-attachment: scroll;
+      }
+
+      .about h2, .community-text h2 {
+        font-size: 1.8rem;
+      }
+
+      .community {
+        padding: 30px 10px;
+      }
+
+      .community-banner {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+      }
+
+      .character-image {
+        max-width: 100%;
+      }
+
+      .community-text p {
+        font-size: 0.9rem;
+      }
+
+      .portal {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Intro Screen -->
+  <div class="intro">
+    <div class="portal"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <span class="hamburger">☰</span>
+    <ul>
+      <li><a href="#hero">Inicio</a></li>
+      <li><a href="#about">Sobre</a></li>
+      <li><a href="#community">Nuestra Comunidad</a></li>
+      <li><a href="https://discord.com/invite/n2JQYVrsny">Discord</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero" data-aos="fade-up">
+    <video autoplay muted loop playsinline>
+      <source src="/contenido/videoplayback.mp4" type="video/mp4">
+      Tu navegador no soporta videos.
+    </video>
+    <div class="text-container">
+      <h1>Splitgate Hispano</h1>
+      <p>¡Únete a la comunidad hispana más grande de *Splitgate 2* en Discord! Comparte estrategias, participa en torneos y vive la acción de los portales con jugadores de habla hispana.</p>
+      <a href="https://discord.com/invite/n2JQYVrsny" class="cta-button">Unirse a Discord</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about" data-aos="fade-up" data-aos-delay="100">
+    <h2>Sobre Splitgate Hispano</h2>
+    <p>
+      *Splitgate Hispano* es la comunidad definitiva para los fans hispanohablantes de *Splitgate 2*. Organizamos torneos semanales, compartimos guías de portales, creamos memes y conectamos a jugadores de toda América Latina y España. ¡Únete para mejorar tu juego, hacer amigos y dominar las arenas con estilo!
+    </p>
+  </section>
+
+  <!-- Community Section -->
+  <section class="community" id="community">
+    <div class="community-banner" data-aos="fade-right" data-aos-delay="200">
+      <img src="/contenido/SHISPANO.webp" alt="Personaje de Splitgate 2" class="character-image">
+      <div class="community-text">
+        <h2>Nuestra Comunidad</h2>
+        <p>
+          *Splitgate Hispano* es un portal de pasión y acción. Jugadores hispanohablantes se unen para dominar *Splitgate 2*, compartir estrategias, competir en torneos épicos y reír con memes. ¡Salta al Discord y vive la aventura!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Splitgate Hispano. Creado por y para la comunidad hispana. <a href="https://discord.com/invite/n2JQYVrsny">Únete a nuestro Discord</a>.</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+
+    // Interacción: Alerta antes de unirse a Discord
+    document.querySelector('.cta-button').addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('¡Bienvenido a Splitgate Hispano! Prepárate para dominar los portales con la comunidad hispana.');
+      window.location.href = 'https://discord.com/invite/n2JQYVrsny';
+    });
+
+    // Toggle menú hamburguesa en móviles
+    document.querySelector('.hamburger').addEventListener('click', () => {
+      document.querySelector('.navbar ul').classList.toggle('active');
+    });
+
+    // Remover la intro después de 3 segundos
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.body.classList.add('loaded');
+        document.querySelector('.intro').style.display = 'none';
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
